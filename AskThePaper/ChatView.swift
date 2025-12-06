@@ -12,21 +12,27 @@ struct ChatView: View {
 	@State private var session = LanguageModelSession()
 	@State private var messages: [Message] = []
 	@State private var messageText = ""
+	@State private var isTyping: Bool = false
 
 	var body: some View {
 		VStack {
 			ScrollViewReader { proxy in
 				ScrollView {
 					LazyVStack(spacing: 0) {
-						ForEach(messages) {
-							Text($0.text)
+						ForEach(messages, content: MessageBubble.init)
+
+						if isTyping {
+							HStack {
+								TypingIndicator()
+								Spacer()
+							}
+							.transition(.move(edge: .leading))
 						}
 					}
 					.padding()
 				}
 			}
-			TextField("Enter a prompt", text: $messageText)
-				.onSubmit(sendMessage)
+			MessageInputView(messageText: $messageText, onSend: sendMessage)
 		}
 	}
 
@@ -42,7 +48,9 @@ struct ChatView: View {
 	}
 
 	func respond(to prompt: String) async {
+		defer { isTyping = false }
 		do {
+			isTyping = true
 			let response = try await session.respond(to: prompt)
 			messages.append(Message(text: response.content, isAI: true))
 		} catch(let error) {

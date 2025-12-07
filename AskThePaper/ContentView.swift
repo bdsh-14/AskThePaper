@@ -35,6 +35,7 @@ struct ContentView: View {
 
 		let result = switch contentType {
 		case .pdf: handlePdf(item)
+		case .plainText: handlePlainText(item)
 		default: String?.none
 		}
 
@@ -49,6 +50,10 @@ struct ContentView: View {
 
 	func handlePdf(_ data: Data) -> String? {
 		PDFDocument(data: data)?.string
+	}
+
+	func handlePlainText(_ data: Data) -> String? {
+		String(decoding: data, as: UTF8.self)
 	}
 }
 

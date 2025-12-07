@@ -26,7 +26,7 @@ struct ContentView: View {
 				Text("Processing...")
 			}
 		case .loaded(let string):
-			ChatView()
+			ChatView(document: string)
 		}
     }
 

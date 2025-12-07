@@ -9,7 +9,7 @@ import FoundationModels
 import SwiftUI
 
 struct ChatView: View {
-	@State private var session = LanguageModelSession()
+	@State private var session: LanguageModelSession
 	@State private var messages: [Message] = []
 	@State private var messageText = ""
 	@State private var isTyping: Bool = false
@@ -31,9 +31,18 @@ struct ChatView: View {
 					}
 					.padding()
 				}
+				.defaultScrollAnchor(.bottom)
+				.onChange(of: messages) {
+					proxy.scrollTo(messages.last?.id, anchor: .bottom)
+				}
 			}
 			MessageInputView(messageText: $messageText, onSend: sendMessage)
 		}
+	}
+
+	init(document: String) {
+		let session = LanguageModelSession(instructions: "Answer questions about this text: \(document)")
+		self._session = State(initialValue: session)
 	}
 
 	func sendMessage() {
@@ -57,4 +66,8 @@ struct ChatView: View {
 			print(error.localizedDescription)
 		}
 	}
+}
+
+#Preview {
+	ChatView(document: "United States is the greatest nation in the world.")
 }

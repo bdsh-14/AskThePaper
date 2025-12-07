@@ -18,7 +18,7 @@ struct ChatView: View {
 		VStack {
 			ScrollViewReader { proxy in
 				ScrollView {
-					LazyVStack(spacing: 0) {
+					LazyVStack(spacing: 12) {
 						ForEach(messages, content: MessageBubble.init)
 
 						if isTyping {

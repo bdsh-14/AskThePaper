@@ -19,12 +19,12 @@ struct DroppedFileView: View {
 		} description: {
 			Text("Drag and drop a file here to ask questions about its contents.")
 		}
-		.frame(width: .infinity, height: .infinity)
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.background(isDraggingOver ? Color.blue.opacity(0.1) : .clear)
 		.overlay {
 			RoundedRectangle(cornerRadius: 16)
 				.strokeBorder(isDraggingOver ? Color.accentColor : .secondary, style: .init(lineWidth: 2, dash: [10, 5]))
-				.padding(24)
+				.padding(30)
 		}
 		.dropDestination(for: DroppedFile.self) { items, _ in
 			guard let item = items.first else { return false }

@@ -38,6 +38,9 @@ struct ChatView: View {
 			}
 			MessageInputView(messageText: $messageText, onSend: sendMessage)
 		}
+		.task {
+			await respond(to: "Give me a summary of this document in 3-5 sentences.")
+		}
 	}
 
 	init(document: String) {
